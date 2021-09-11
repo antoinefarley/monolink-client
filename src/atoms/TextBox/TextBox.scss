@@ -1,0 +1,64 @@
+@import "@styles/Utils.scss";
+
+$height: 50px;
+$border_size: 2px;
+
+.input_container {
+  @include wh(100%, 100%);
+  @include rel();
+  margin-right: 10px;
+
+  .input_div {
+    @include wh(100%, 100%);
+    @include padmarge(10px 44px 10px 10px);
+    @include color(#f9fafb, auto);
+    @include border($border_size solid transparent, 7px);
+    @include font($height - 30px, auto, 300px);
+    @include transition();
+
+    outline: none;
+    box-sizing: border-box;
+    z-index: 1000;
+    box-shadow: $boxshadow;
+
+    &:placeholder-shown {
+      font-style: italic;
+    }
+
+    @media only screen and (max-width: 600px) {
+      @include font($height - 34px, auto, 300px);
+    }
+
+    &.valid {
+      @include border($border_size solid $green, 7px);
+    }
+    &.invalid {
+      @include border($border_size solid $red, 7px);
+    }
+  }
+
+  .cancel_icon_container {
+    @include wh(50px, 100%);
+    @include flex(column, center);
+    @include abs(0, 0);
+    @include child0Auto();
+    @include transition(0.05s);
+    visibility: hidden;
+
+    &.unavailable {
+      visibility: hidden;
+      opacity: 0;
+    }
+    &:hover {
+      cursor: pointer;
+      opacity: 0.2;
+    }
+    &:active {
+      visibility: visible;
+    }
+
+    svg {
+      @include wh(30px, 30px);
+    }
+  }
+}

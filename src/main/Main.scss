@@ -1,0 +1,244 @@
+@import "@styles/Utils.scss";
+
+@mixin container($height) {
+  @include wh(100%, $height);
+  border-radius: 10px;
+  // margin: 0px 30px;
+  box-sizing: border-box;
+}
+
+@mixin global() {
+  font-family: Roboto, sans-serif !important;
+}
+
+@mixin tvSizeMQ(){
+  @media only screen and (min-width: 1400px) {
+    width:1400px;
+    margin: 0 auto;
+  }
+}
+
+.main_container {
+  @include global();
+
+  @include wh(100%, 100vh);
+  @include flex(column, flex-start);
+
+  row-gap: 10px;
+  background-color: white;
+  align-items: center;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+
+  @include tvSizeMQ();
+
+  .history-overlay {
+    @include wh(100%, 100vh);
+    @include abs();
+    background-color: gray;
+    opacity: 0.7;
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  .top-right-action-container {
+    @include wh(fit-content, fit-content);
+    @include flex(row, space-between);
+    @include abs($top: 0, $right: 0);
+    margin: 10px 10px;
+
+    &.hide-button > :first-child {
+      opacity: 0;
+      pointer-events: none;
+    }
+    > :first-child {
+      margin-right: 10px;
+    }
+  }
+
+  .error_notification_container {
+    @include wh(80%, 70px);
+    @include abs($top: 20px, $left: calc(10%));
+    background-color: $purple;
+
+    box-shadow: $boxshadow;
+    border-radius: 8px;
+    animation: load1 1s ease;
+    @keyframes load1 {
+      from {
+        transform: translateY(-100px);
+      }
+      to {
+        transform: translateY(0px);
+      }
+    }
+
+    > div {
+      font-size: 24px;
+      text-align: center;
+      color: ghostwhite;
+      line-height: 70px;
+    }
+  }
+
+  .logo_container {
+    width: 100%;
+    height: 60px;
+    min-height: 60px;
+    background-color: transparent;
+    @include flex(row, center);
+
+    img {
+      margin-top: 10px;
+      height: 40px;
+      width: auto;
+    }
+
+    @media only screen and (max-width: 600px) {
+      @include flex(row, flex-start);
+
+      img {
+        margin-left: 30px;
+        margin-top: 10px;
+        height: 25px;
+        width: auto;
+      }
+    }
+  }
+
+  .search_container {
+    @include container(50px);
+    position: relative;
+
+    .history_icon_container {
+      @include wh(100px, 30px);
+      @include flex(column, center);
+      border: 2px solid transparent;
+      @include abs($bottom: calc(100% + 8px), $left: -6px);
+      border-radius: 7px;
+      margin-left: 6px;
+      cursor: pointer;
+      box-shadow: $boxshadow;
+      @include transition(0.05s);
+
+      background-color: $purple;
+
+      &:hover {
+        opacity: 1;
+      }
+      &:active {
+        transform: translateY(2px);
+        box-shadow: none;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      @include child0Auto();
+    }
+  }
+
+  .result_container {
+    @include container(fit-content);
+
+    @include flex(column, flex-start);
+
+    > :not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    
+
+    .platform_result_container {
+      $resheight: 80px;
+      @include wh(100%, #{$resheight});
+      @include flex(row, space-between);
+      gap: 10px;
+
+
+      .icon_container {
+        @include wh(#{$resheight}, 100%);
+        @include flex(column, center);
+        border-radius: 8px;
+        background-color: lightgray;
+        cursor: pointer;
+        border: none;
+
+
+        &:not(:hover){
+          svg {
+            fill: black !important;
+            color: black !important;
+          }
+        }
+
+        > * {
+          margin: 0 auto;
+          width: auto;
+        }
+      }
+
+      .info_container {
+        @include wh(calc(100% - #{$resheight}), 100%);
+        font-size: 12px !important;
+
+        display:flex;
+        gap: 10px;
+
+
+      }
+
+      &.notfound {
+        .info_container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          line-height: 100%;
+          font-size: 16px !important;
+          font-weight: bold;
+          background-color: rgb(212, 212, 212);
+          border-radius: 6px;
+        }
+      }
+    }
+
+    &.idle {
+      max-height: calc(100% - 240px);
+
+      .icon_container {
+        width: 100%;
+      }
+      .info_container {
+        display: none;
+      }
+    }
+
+    &.searching {
+      background-color: gray;
+      border-radius: 8px;
+      animation: example 1s infinite ease-in-out;
+      > div {
+        opacity: 0;
+      }
+
+      @keyframes example {
+        0% {
+          background-color: rgb(45, 45, 45);
+        }
+        50% {
+          background-color: rgb(211, 211, 211);
+        }
+        100% {
+          background-color: rgb(45, 45, 45);
+        }
+      }
+    }
+  }
+}
+

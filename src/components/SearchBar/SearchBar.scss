@@ -1,0 +1,24 @@
+@import "@styles/Utils.scss";
+
+$height: 40px;
+$border_size: 2px;
+
+.component_il20afar_input {
+  @include wh(100%, $height);
+  @include flex(row, space-between);
+  @include rel();
+
+  &:focus-within {
+    @each $key, $val in (idle: transparent, invalid: $red, valid: $green) {
+      &.input-validity-#{$key} {
+        .input_div {
+          border: $border_size solid $val;
+        }
+      }
+    }
+
+    .cancel_icon_container {
+      visibility: visible;
+    }
+  }
+}

@@ -1,0 +1,101 @@
+$main: black;
+$bg: rgb(242, 240, 240);
+$text_alt: ghostwhite;
+$text_bg: ghostwhite;
+$border: black;
+$confirm_green: rgb(54, 224, 105);
+$cancel_red: rgb(255, 0, 0);
+$purple: rgb(103, 2, 170);
+$green: rgb(85, 199, 85);
+$red: rgb(218, 67, 67);
+
+$boxshadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.12),
+  0 4px 4px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.12),
+  0 16px 16px rgba(0, 0, 0, 0.12);
+
+// Dimensions
+@mixin wh($width: auto, $height: auto) {
+  width: $width;
+  height: $height;
+}
+@mixin padmarge($padding: auto, $margin: auto) {
+  padding: $padding;
+  margin: $margin;
+}
+
+// Displaysz
+@mixin flex($direction, $justifyContent) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justifyContent;
+}
+
+// Positioning
+@mixin abs($top: auto, $right: auto, $bottom: auto, $left: auto) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+@mixin rel() {
+  position: relative;
+}
+
+// Border
+@mixin border($border, $borderRadius) {
+  border: $border;
+  border-radius: $borderRadius;
+}
+
+// Color
+@mixin color($backgroundColor, $color) {
+  background-color: $backgroundColor;
+  color: $color;
+}
+
+// Font
+@mixin font($size, $lineheight, $weight, $style: auto) {
+  font-size: $size;
+  line-height: $lineheight;
+  font-weight: $weight;
+  font-style: $style;
+}
+
+// Animation/transition
+@mixin keyf($from, $to, $time, $transition) {
+  $id: unique-id();
+  animation: keyframe-#{$id} $time $transition;
+  @keyframes keyframe-#{$id} {
+    from {
+      @each $property, $val in $from {
+        #{$property}: $val;
+      }
+    }
+    to {
+      @each $property, $val in $to {
+        #{$property}: $val;
+      }
+    }
+  }
+}
+@mixin transition($time: 0.15s) {
+  transition: $time ease-in-out;
+}
+
+// Childs
+@mixin child0Auto($height: 100%) {
+  > * {
+    margin: 0 auto;
+    width: auto;
+    height: $height;
+  }
+}
+
+@mixin hideScrollbars(){
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,0 +1,53 @@
+@import "@styles/Utils.scss";
+
+$resheight: 80px;
+
+.info_element_container {
+  @include wh(100%, 100%);
+  @include flex(row, center);
+  gap: 10px;
+  border-radius: 6px;
+  background-color: lightgray;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  .info_element_icon {
+    @include wh(auto, auto);
+    @include flex(column, center);
+    border-radius: 4px;
+
+    > * {
+      margin: 0 auto;
+    }
+    svg {
+      width: 20px !important;
+      height: 20px !important;
+
+    }
+  }
+
+  .info_element_text {
+    @include wh(auto, 100%);
+    @include font(20px, 20px, 500);
+    @include flex(column, center);
+    color: black;
+
+    text-align: left;
+    user-select: none;
+
+    text-decoration: none !important;
+
+    text-overflow: clip;
+  }
+
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none !important;
+  }
+}

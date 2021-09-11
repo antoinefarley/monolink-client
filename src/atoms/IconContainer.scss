@@ -1,0 +1,22 @@
+@import "@styles/Utils.scss";
+
+$resheight: 80px;
+
+.icon_container {
+    @include wh(#{$resheight}, 100%);
+    @include flex(column, center);
+    border-radius: 8px;
+    background-color: ghostwhite;
+    cursor: pointer;
+    border: 1px solid black;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    > * {
+      margin: 0 auto;
+      height: calc(#{$resheight} - 40px);
+      width: auto;
+    }
+  }

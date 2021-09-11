@@ -1,0 +1,87 @@
+@import "@styles/Utils.scss";
+
+
+.content-current {
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+  gap: 20px;
+
+
+  .res-idle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 20px;
+    opacity:0.7;
+
+    font-weight: bold;
+    color: white;
+    background-color: gray;
+    border-radius: 8px;
+  }
+
+  .share-button-container {
+    @include wh(100%, 60px);
+    @include flex(column, center);
+    border-radius: 7px;
+    cursor: pointer;
+    box-shadow: $boxshadow;
+    @include transition(0.05s);
+    background-color: $purple;
+    color: white;
+    position: relative;
+
+    &.copied {
+      div.absolute {
+        .text {
+          transition: width 0.2s ease-in-out;
+          @include wh(180px, 20px);
+          font-size: 20px;
+        }
+      }
+    }
+
+    > div.absolute {
+      @include flex(row, center);
+      @include wh(fit-content, fit-content);
+
+      .text {
+        @include wh(0px, 20px);
+        overflow: hidden;
+        font-weight: bold;
+        text-decoration: italic !important;
+      }
+
+      &.icon {
+        svg {
+          // margin: 0 auto;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+    &:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    @include child0Auto();
+  }
+
+  @media only screen and (max-width: 600px) {
+    &.idle {
+      height:100%;
+    }
+  }
+  @media only screen and (min-width: 600px) {
+    height:100%;
+  }
+}
