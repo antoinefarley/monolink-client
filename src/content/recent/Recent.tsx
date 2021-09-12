@@ -11,6 +11,6 @@ export const Recent = () => {
   return recent.length === 0 ? (
     <InitialView>{text.content.recentInitialView}</InitialView>
   ) : (
-    <HomepageGrid images={recent} />
+    <HomepageGrid images={recent} showSearchCount={false} />
   );
 };

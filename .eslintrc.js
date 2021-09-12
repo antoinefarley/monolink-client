@@ -35,6 +35,7 @@ module.exports = {
     'react/jsx-uses-vars': 'error',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/display-name': 'off',
     // Prettier
     // "prettier/prettier": "error",
     // '@typescript-eslint/indent': 'off',

@@ -32,7 +32,6 @@
 
   position: relative;
 
-
   >.tab-elem-text{
     width:100%;
     line-height: 40px;
@@ -41,23 +40,29 @@
     text-align: center;
   }
   >.tab-elem-icon{
-    width:auto;
-    height:100%;
-    @include abs($top:0, $right:0);
+    $margin: 4px;
+    width:32px;
+    height:calc(100% - 2 * #{$margin});
+    @include abs($top:$margin, $right:$margin);
 
     display:flex;
     align-items: center;
-
     pointer-events: all;
-  }
+    background-color: white;
+    border-radius: $margin;
 
+    svg, path {
+      fill:gray;
+    }
+  }
+  
   &.selected {
     color: white;
-    background-color: lightgray;
+    background-color: gray;
     pointer-events: none;
   }
   &:not(.selected) {
-    opacity: 0.3;
+    opacity: 0.5;
 
     &:hover {
       background-color: gray;

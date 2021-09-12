@@ -31,6 +31,8 @@ export const request = async (method, endpoint, jsonParams) => {
       `${process.env.REACT_APP_BACKEND_URL}/${endpoint}`,
       {
         method,
+        mode: 'cors',
+        redirect: 'follow',
         ...(method === 'POST' && {
           headers: {
             'Content-Type': 'application/json',

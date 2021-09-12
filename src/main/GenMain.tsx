@@ -191,31 +191,31 @@ const GenMain = () => {
       <SearchContext.Provider
         value={{ searchActionStatus, result, recent, resetRecent }}
       >
-        <>
-          <div className={`main_container ${searchActionStatus}`}>
-            <HeaderInfo />
+        <div className={`main_container ${searchActionStatus}`}>
+          <HeaderInfo />
 
-            {searchActionStatus === 'error' && (
-              <div className="error_notification_container">
-                <div>{errorMessage}</div>
-              </div>
-            )}
+          {searchActionStatus === 'error' && (
+            <div className="error_notification_container">
+              <div>{errorMessage}</div>
+            </div>
+          )}
 
-            <SearchBar
-              value={input.value}
-              placeholder={text.searchPlaceholder}
-              onChange={(e) => dispatch({ type: 'updateInput', payload: e })}
-              onSearch={onSearch}
-              onCancel={() => dispatch({ type: 'updateInput', payload: '' })}
-              inputValidityStatus={input.validityStatus}
-            />
-            <>
-              <ContentTabs />
-
-              {modifiers.history && <div className="history-overlay" />}
-            </>
-          </div>
-        </>
+          <SearchBar
+            value={input.value}
+            placeholder={text.searchPlaceholder}
+            onChange={(e) => dispatch({ type: 'updateInput', payload: e })}
+            onSearch={onSearch}
+            onCancel={() => dispatch({ type: 'updateInput', payload: '' })}
+            inputValidityStatus={input.validityStatus}
+          />
+          <ContentTabs
+            dispatch={dispatch}
+            searchActionStatus={state.searchActionStatus}
+            result={result}
+            recent={recent}
+            resetRecent={resetRecent}
+          />
+        </div>
       </SearchContext.Provider>
     </AppContext.Provider>
   );

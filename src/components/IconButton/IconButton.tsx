@@ -21,9 +21,10 @@ const StyledIconButton = styled.div`
     margin: 0 auto;
     width: auto !important;
     height: ${(props) =>
-      props.$st.fullSizeIcon
+      props.$st.iconSize ??
+      (props.$st.fullSizeIcon
         ? props.$st.height
-        : `calc(0.6 * ${(props) => props.$st.height})`} !important;
+        : `calc(0.6 * ${(props) => props.$st.height})`)} !important;
   }
 
   > div {
@@ -39,7 +40,7 @@ const StyledIconButton = styled.div`
   }
 
   &.idle {
-    background-color: ${(props) => props?.$st.idleColor ?? '#454f5b'};
+    background-color: ${(props) => props?.$st.idleColor ?? 'gray'};
   }
 
   &.invalid {
@@ -98,6 +99,7 @@ export const SearchButton = (props) => (
       borderRadius: '7px',
       validColor: sv.green,
       invalidColor: sv.red,
+      iconSize: '20px',
     }}
   >
     <FontAwesomeIcon icon={faSearch} color="white" size="sm" />

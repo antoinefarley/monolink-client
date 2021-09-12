@@ -20,6 +20,7 @@ const GridTile = (props) => {
     onTileSelection = null,
     trackInfo = {},
     blank,
+    showSearchCount,
   } = props;
   const { data, platformLinks, searchCounter } = trackInfo;
   const isSelectedTab = selectedTile === data?.isrc;
@@ -29,6 +30,8 @@ const GridTile = (props) => {
       key={uuid()}
       onClick={blank ? null : () => onTileSelection(data.isrc)}
       $blank={blank}
+      $selected={isSelectedTab}
+      $showSearchCount={showSearchCount}
     >
       {!blank && (
         <>
@@ -66,7 +69,7 @@ const GridTile = (props) => {
 };
 
 export const HomepageGrid = (props) => {
-  const { images = [], imgSize = '150px' } = props;
+  const { images = [], imgSize = '150px', showSearchCount = true } = props;
   const [selectedTile, setSelectedTile] = React.useState(null);
   const onTileSelection = (isrc) => {
     setSelectedTile(isrc === selectedTile ? null : isrc);
@@ -76,10 +79,13 @@ export const HomepageGrid = (props) => {
     <StyledHomepageGrid $imgSize={imgSize}>
       {images.map((elem) => (
         <GridTile
-          key={`grid-tile-elem-${elem.id}`}
+          key={`grid-tile-elem-${
+            showSearchCount ? 'useCount' : ''
+          }${JSON.stringify(elem)}`}
           selectedTile={selectedTile}
           onTileSelection={onTileSelection}
           trackInfo={elem}
+          showSearchCount={showSearchCount}
         />
       ))}
       <GridTile blank />
@@ -128,13 +134,18 @@ const StyledGridTile = styled.div`
     width: 20px;
     height: 20px;
     position: absolute;
-    bottom: 0;
-    right: 0;
-    color: gray;
+    bottom: 10px;
+    right: 10px;
+    color: white;
     font-weight: bold;
     font-size: 12px;
     line-height: 20px;
-    opacity: 0.4;
+    background-color: gray;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+    border-radius: 20px;
+    align-items: center;
   }
 
   &:hover {
@@ -146,7 +157,18 @@ const StyledGridTile = styled.div`
         }
       }
     }
+    > div:last-of-type {
+      display: none;
+    }
   }
+  ${(props) =>
+    (props.$selected || !props.$showSearchCount) &&
+    css`
+      > div:last-of-type {
+        display: none;
+      }
+    `}
+
   ${(props) =>
     props.$blank
       ? css`

@@ -15,9 +15,9 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AppContext, SearchContext } from '@state/context';
 import { getCircularArrVal, request } from '@utils/utils';
-import { useContext, useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const tabKeys = Object.keys(text.tabs)[0];
@@ -45,112 +45,121 @@ const sortFunctions = {
   recent: (a, b) => (a.data.year < b.data.year ? -1 : 1),
 };
 
-export const ContentTabs = () => {
-  const { searchActionStatus, result, recent, resetRecent } =
-    useContext(SearchContext);
-  const { dispatch } = useContext(AppContext);
+export const ContentTabs = React.memo(
+  (props: any) => {
+    const { searchActionStatus, result, recent, resetRecent, dispatch } = props;
 
-  // Top Searches
-  const [topSearches, setTopSearches] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const result = await request('GET', 'get_top_searches', {});
-      if (result && result?.status !== 'error') {
-        setTopSearches(result);
+    // Top Searches
+    const [topSearches, setTopSearches] = useState([]);
+    useEffect(() => {
+      (async () => {
+        const result = await request('GET', 'get_top_searches', {});
+        if (result && result?.status !== 'error') {
+          setTopSearches(result);
+        }
+      })();
+    }, [result]);
+
+    // Tabs
+    const [currentTab, setCurrentTab] = useState(tabKeys);
+    const [currentTopSearchesSortState, setCurrentTopSearchesSortState] =
+      useState('trending');
+
+    const onSelect = (selector) => {
+      setCurrentTab(selector);
+    };
+    const onIconButtonClick = {
+      top_searches: () => {
+        setCurrentTopSearchesSortState(
+          getCircularArrVal(
+            sortModes.indexOf(currentTopSearchesSortState) + 1,
+            sortModes,
+          ),
+        );
+      },
+      current: () => {
+        dispatch({ type: 'selectionUpdate', payload: null });
+        dispatch({ type: 'updateActionStatus', payload: 'idle' });
+      },
+      recent: () => {
+        resetRecent();
+      },
+    };
+
+    useEffect(() => {
+      if (searchActionStatus === 'success') {
+        setCurrentTab('current');
       }
-    })();
-  }, [result]);
+    }, [searchActionStatus]);
 
-  // Tabs
-  const [currentTab, setCurrentTab] = useState(tabKeys);
-  const [currentTopSearchesSortState, setCurrentTopSearchesSortState] =
-    useState('trending');
+    return (
+      <StyledContentTabs>
+        <Tabs selected={currentTab} onSelect={onSelect}>
+          <TabElem
+            selector={'top_searches'}
+            icon={
+              topSearches?.length >= 1 &&
+              iconButtons.top_searches[currentTopSearchesSortState]
+            }
+            onIconClick={onIconButtonClick.top_searches}
+          >
+            {text.tabs.top_searches}
+          </TabElem>
+          <TabElem
+            selector={'current'}
+            icon={searchActionStatus === 'success' && iconButtons.current.clear}
+            onIconClick={onIconButtonClick.current}
+          >
+            {searchActionStatus === 'searching' ? (
+              <FontAwesomeIcon className="fa-spin" icon={faSpinner} />
+            ) : (
+              text.tabs.current
+            )}
+          </TabElem>
+          <TabElem
+            selector={'recent'}
+            icon={recent?.length >= 1 && iconButtons.recent.clear}
+            onIconClick={onIconButtonClick.recent}
+          >
+            {text.tabs.recent}
+          </TabElem>
+        </Tabs>
 
-  const onSelect = (selector) => {
-    setCurrentTab(selector);
-  };
-  const onIconButtonClick = {
-    top_searches: () => {
-      setCurrentTopSearchesSortState(
-        getCircularArrVal(
-          sortModes.indexOf(currentTopSearchesSortState) + 1,
-          sortModes,
-        ),
-      );
-    },
-    current: () => {
-      dispatch({ type: 'selectionUpdate', payload: null });
-      dispatch({ type: 'updateActionStatus', payload: 'idle' });
-    },
-    recent: () => {
-      resetRecent();
-    },
-  };
+        <StyledSeparator />
 
-  useEffect(() => {
-    if (searchActionStatus === 'success') {
-      setCurrentTab('current');
-    }
-  }, [searchActionStatus]);
-
-  return (
-    <StyledContentTabs>
-      <Tabs selected={currentTab} onSelect={onSelect}>
-        <TabElem
-          selector={'top_searches'}
-          icon={
-            topSearches?.length >= 1 &&
-            iconButtons.top_searches[currentTopSearchesSortState]
-          }
-          onIconClick={onIconButtonClick.top_searches}
-        >
-          {text.tabs.top_searches}
-        </TabElem>
-        <TabElem
-          selector={'current'}
-          icon={searchActionStatus === 'success' && iconButtons.current.clear}
-          onIconClick={onIconButtonClick.current}
-        >
-          {searchActionStatus === 'searching' ? (
-            <FontAwesomeIcon icon={faSpinner} />
-          ) : (
-            text.tabs.current
+        <FunctionalCarousel
+          selected={Object.keys(text.tabs).findIndex(
+            (elem) => elem === currentTab,
           )}
-        </TabElem>
-        <TabElem
-          selector={'recent'}
-          icon={recent?.length >= 1 && iconButtons.recent.clear}
-          onIconClick={onIconButtonClick.recent}
+          onEnterView={onSelect}
         >
-          {text.tabs.recent}
-        </TabElem>
-      </Tabs>
+          <FunctionalCarouselElement selector="top_searches">
+            <TopSearches
+              songs={topSearches.sort(
+                sortFunctions[currentTopSearchesSortState],
+              )}
+            />
+          </FunctionalCarouselElement>
 
-      <StyledSeparator />
+          <FunctionalCarouselElement selector="current">
+            <Current />
+          </FunctionalCarouselElement>
 
-      <FunctionalCarousel
-        selected={Object.keys(text.tabs).findIndex(
-          (elem) => elem === currentTab,
-        )}
-        onEnterView={onSelect}
-      >
-        <FunctionalCarouselElement selector="top_searches">
-          <TopSearches
-            songs={topSearches.sort(sortFunctions[currentTopSearchesSortState])}
-          />
-        </FunctionalCarouselElement>
-
-        <FunctionalCarouselElement selector="current">
-          <Current />
-        </FunctionalCarouselElement>
-
-        <FunctionalCarouselElement selector="recent">
-          <Recent />
-        </FunctionalCarouselElement>
-      </FunctionalCarousel>
-    </StyledContentTabs>
-  );
-};
+          <FunctionalCarouselElement selector="recent">
+            <Recent />
+          </FunctionalCarouselElement>
+        </FunctionalCarousel>
+      </StyledContentTabs>
+    );
+  },
+  (prev, next) => {
+    return (
+      prev.result === next.result ||
+      prev.searchActionStatus === next.searchActionStatus ||
+      prev.recent === next.recent
+    );
+  },
+);
 
 const StyledContentTabs = styled.div`
   width: 100%;

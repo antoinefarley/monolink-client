@@ -9,7 +9,10 @@ export const HeaderInfo = () => {
       <StyledLogo src={logob} />
       <GitHubButton
         onClick={() => {
-          window.open('https://github.com/il20afar/monolink', '_blank');
+          window.open(
+            'https://github.com/antoinefarley/monolink-client',
+            '_blank',
+          );
         }}
       />
     </StyledHeaderInfo>

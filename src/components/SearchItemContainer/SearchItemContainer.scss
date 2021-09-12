@@ -131,24 +131,12 @@
   }
 
   &.searching {
-    background-color: gray;
     border-radius: 8px;
-    animation: example 1s infinite ease-in-out;
     > div {
       display: none;
     }
 
-    @keyframes example {
-      0% {
-        background-color: rgb(211, 211, 211);
-      }
-      50% {
-        background-color: rgb(45, 45, 45);
-      }
-      100% {
-        background-color: rgb(211, 211, 211);
-      }
-    }
+    @include useLoadingFlicker();
   }
 
   .success {
@@ -163,10 +151,7 @@
     .platform_result_container {
 
   
-    
-      .background_image {
 
-      }
   
       .info_container {
 
@@ -180,10 +165,6 @@
   
           .info_field_container {
 
-
-            .info_field_title {
-
-            }
             .info_field_content {
               margin:0;
 
