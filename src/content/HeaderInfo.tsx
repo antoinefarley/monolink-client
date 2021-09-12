@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
 import { GitHubButton } from '../components/IconButton/IconButton';
-import logob from '../logob.png';
 
 export const HeaderInfo = () => {
   return (
     <StyledHeaderInfo>
-      <StyledLogo src={logob} />
+      <StyledLogo src="monolink_logo.png" />
       <GitHubButton
         onClick={() => {
           window.open(
