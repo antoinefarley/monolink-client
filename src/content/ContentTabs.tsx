@@ -54,8 +54,8 @@ export const ContentTabs = () => {
   const [topSearches, setTopSearches] = useState([]);
   useEffect(() => {
     (async () => {
-      const result = await request('GET', 'get_top_searches', { a: '' });
-      if (result?.status !== 'error') {
+      const result = await request('GET', 'get_top_searches', {});
+      if (result && result?.status !== 'error') {
         setTopSearches(result);
       }
     })();

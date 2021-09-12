@@ -22,52 +22,32 @@ export const txtClipboard = async (
   );
 };
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
 export const timePromise = (timeout) =>
   new Promise((resolve) => setTimeout(resolve, timeout));
 
-export const request = async (method, endpoint, jsonParams, useAuth = '') => {
+export const request = async (method, endpoint, jsonParams) => {
   try {
-    const req = await fetch(`${backendUrl}/${endpoint}`, {
-      method,
-      ...(method === 'POST' && {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(useAuth && { Authorization: useAuth }),
-        },
-        body: JSON.stringify({
-          ...jsonParams,
+    const req = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/${endpoint}`,
+      {
+        method,
+        ...(method === 'POST' && {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...jsonParams,
+          }),
         }),
-      }),
-    });
+      },
+    );
     if (req.status == 201) {
       const res = await req.json();
       return res;
     } else {
-      return false;
+      return null;
     }
   } catch (error) {
     return { status: 'error', message: 'Network connectivity error.' };
   }
-};
-
-export const req = {
-  post: async (params: any) => {
-    try {
-      const req = await fetch(`${backendUrl}/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...params,
-        }),
-      });
-      const res = await req.json();
-      return res;
-    } catch (error) {
-      return { status: 'error', message: 'Network connectivity error.' };
-    }
-  },
 };
